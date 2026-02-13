@@ -8,7 +8,7 @@ A lightweight desktop overlay tool that lets you pin a transparent image on top 
 
 ### Option 1: Installer (recommended)
 
-1. Download **TraceIt-Setup.exe** from [Releases](https://github.com/SigNeedsGit/TraceIt/releases).
+1. Download **TraceIt-Setup.exe** from [Releases (Setup)](https://github.com/SigNeedsGit/TraceIt/releases/tag/setup).
 2. Run the installer (one-click install).
 3. Launch **TraceIt** from the Start menu or desktop shortcut.
 4. A splash screen appears as the app loads; then the main window opens. Click **Upload Image** to load a reference and start.
@@ -17,7 +17,7 @@ The app starts immediately when you run it—no unpack delay. Best experience.
 
 ### Option 2: Portable (no install)
 
-1. Download **TraceIt-Portable.exe** from [Releases](https://github.com/SigNeedsGit/TraceIt/releases).
+1. Download **TraceIt-Portable.exe** from [Releases (Setup)](https://github.com/SigNeedsGit/TraceIt/releases/tag/setup).
 2. Double-click to run. The first launch may take several seconds while the exe unpacks; then the splash and main window appear.
 3. Click **Upload Image** to load a reference and start.
 

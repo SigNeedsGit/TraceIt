@@ -240,6 +240,7 @@ function switchToTopBar() {
 
 function switchToControl() {
   if (topBarWindow && !topBarWindow.isDestroyed()) topBarWindow.hide();
+  if (overlayWindow && !overlayWindow.isDestroyed()) overlayWindow.hide();
   const ctrl = createControlWindow();
   ctrl.show();
   ctrl.focus();
