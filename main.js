@@ -9,6 +9,7 @@ const MAX_SCREEN_FRACTION = 0.9;
 const TOP_BAR_HEIGHT = 48;
 const FRAME_BORDER = 2;
 
+let splashWindow = null;
 let controlWindow = null;
 let topBarWindow = null;
 let overlayWindow = null;
@@ -20,6 +21,35 @@ let overlayScale = 1.0;
 let clickThrough = true;
 let traceMode = false;
 let topBarDragInterval = null;
+
+function createSplashWindow() {
+  splashWindow = new BrowserWindow({
+    width: 280,
+    height: 180,
+    frame: false,
+    center: true,
+    resizable: false,
+    transparent: true,
+    alwaysOnTop: true,
+    skipTaskbar: false,
+    backgroundColor: '#0a0a0a',
+    show: false,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+  splashWindow.loadFile(getRendererPath('splash'));
+  splashWindow.once('ready-to-show', () => splashWindow.show());
+  return splashWindow;
+}
+
+function closeSplash() {
+  if (splashWindow && !splashWindow.isDestroyed()) {
+    splashWindow.close();
+    splashWindow = null;
+  }
+}
 
 function loadConfig() {
   try {
@@ -56,6 +86,7 @@ function createControlWindow() {
     minWidth: 320,
     minHeight: 280,
     center: true,
+    show: false,
     title: 'TraceIt by Sig',
     backgroundColor: '#0e0e0e',
     webPreferences: {
@@ -485,6 +516,9 @@ function updateTrayMenu() {
 // --- App lifecycle ---
 
 app.whenReady().then(() => {
+  // Show splash immediately for instant feedback
+  createSplashWindow();
+
   loadConfig();
   if (config.lastImage && require('fs').existsSync(config.lastImage)) {
     currentImagePath = config.lastImage;
@@ -499,9 +533,15 @@ app.whenReady().then(() => {
     currentImagePath = cliPath;
     saveConfig();
     switchToTopBar();
+    closeSplash();
   } else {
     createControlWindow();
-    controlWindow.show();
+    controlWindow.once('ready-to-show', () => {
+      controlWindow.show();
+      closeSplash();
+    });
+    // Fallback if ready-to-show already fired
+    if (controlWindow.isVisible()) closeSplash();
   }
   createTray();
 });
