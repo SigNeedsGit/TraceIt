@@ -33,6 +33,23 @@ npm start
 Requires [Node.js](https://nodejs.org/). Windows 10/11 only.
 
 ---
+## Screenshots
+
+*First boot — Upload Image*
+
+<img width="363" height="406" alt="Screenshot 2026-02-12 232028" src="https://github.com/user-attachments/assets/4989f758-6026-45fa-8e04-127582e49454" />
+
+*When image is uploaded*
+
+<img width="1200" height="1245" alt="Screenshot 2026-02-12 223433" src="https://github.com/user-attachments/assets/01825506-8c12-41ec-bfd0-08fbe505dace" />
+
+*Opacity and Trace mode toggled on*
+
+<img width="1153" height="1188" alt="Screenshot 2026-02-12 223518" src="https://github.com/user-attachments/assets/8555aa05-6592-45e5-abd8-e3648f6f7b67" />
+
+*Result*
+
+<img width="1449" height="1199" alt="Screenshot 2026-02-12 223608" src="https://github.com/user-attachments/assets/36d4c0db-6ede-41b1-a35d-287e09542ea8" />
 
 ## Features
 
