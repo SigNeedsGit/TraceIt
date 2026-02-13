@@ -6,74 +6,83 @@ A lightweight desktop overlay tool that lets you pin a transparent image on top 
 
 ## How to run TraceIt
 
-**If you downloaded a release (recommended):**
+### Option 1: Installer (recommended)
 
-1. Download **TraceIt.exe** from the [Releases](https://github.com/SigNeedsGit/TraceIt/releases) page.
-2. Double-click **TraceIt.exe** to run it.
-3. A loading screen appears briefly; then the TraceIt window opens. Click **Upload Image** to load a reference image and start.
+1. Download **TraceIt-Setup.exe** from [Releases](https://github.com/SigNeedsGit/TraceIt/releases).
+2. Run the installer (one-click install).
+3. Launch **TraceIt** from the Start menu or desktop shortcut.
+4. A splash screen appears as the app loads; then the main window opens. Click **Upload Image** to load a reference and start.
 
-No installation or Node.js required. Windows 10/11 only.
+The app starts immediately when you run it—no unpack delay. Best experience.
 
-**If you have the source code and want to run from source:**
+### Option 2: Portable (no install)
+
+1. Download **TraceIt-Portable.exe** from [Releases](https://github.com/SigNeedsGit/TraceIt/releases).
+2. Double-click to run. The first launch may take several seconds while the exe unpacks; then the splash and main window appear.
+3. Click **Upload Image** to load a reference and start.
+
+Single file, no installation. Good for trying the app or running from a USB drive.
+
+### Run from source
 
 ```bash
 npm install
 npm start
 ```
 
-You need [Node.js](https://nodejs.org/) installed for this.
+Requires [Node.js](https://nodejs.org/). Windows 10/11 only.
 
 ---
 
 ## Features
 
 - **Transparent overlay** — Load any image and display it on top of all windows.
-- **Click-through** — Interact with apps underneath the overlay while tracing.
+- **Click-through** — Interact with apps underneath the overlay while tracing (e.g. paint in a game).
 - **Always on top** — Stays above fullscreen games and other applications.
-- **Adjustable opacity** — Control how see-through the overlay is.
-- **Adjustable scale** — Resize the overlay to fit your needs.
-- **Trace mode** — Lock the overlay in place and enable click-through with one button.
-- **Loading screen** — Splash screen on launch so you know the app is starting.
-- **Dark UI** — Sleek dark theme that stays out of your way.
-- **System tray** — Runs quietly in the background.
+- **Trace mode** — One-click toggle to lock the overlay and enable click-through so you can trace without moving the image.
+- **Adjustable opacity** — Slider on the top bar to control overlay transparency.
+- **Adjustable scale** — Slider to resize the overlay; top bar and image resize together.
+- **Splash screen** — Loading screen on launch (installer: appears as soon as you run the app; portable: after unpack).
+- **Dark UI** — Sleek dark theme; top bar stays visible and draggable.
+- **System tray** — App runs in the tray; load image, opacity, click-through, and exit from the tray menu.
 
-## Screenshots
-
-<img width="363" height="406" alt="TraceIt upload window" src="https://github.com/user-attachments/assets/4c14e09f-fb77-4557-88aa-7047a3959d80" />
-<img width="1200" height="1245" alt="TraceIt overlay" src="https://github.com/user-attachments/assets/eaac8d64-3d2e-4eb7-bf8b-5c0cde08ae78" />
-<img width="1153" height="1188" alt="TraceIt top bar" src="https://github.com/user-attachments/assets/b2e82d1f-98c7-40c7-a7d9-0949ded21d53" />
-<img width="1449" height="1199" alt="TraceIt tracing" src="https://github.com/user-attachments/assets/4f6dfe68-d728-4d96-b4bd-d86ebfcb5607" />
+---
 
 ## Usage
 
-1. Launch TraceIt (double-click the exe or run `npm start`).
-2. Click **Upload Image** to load a reference image.
-3. Use the top bar controls:
-   - **Upload** — Load a new image.
-   - **Opacity** — Adjust overlay transparency.
-   - **Scale** — Resize the overlay.
-   - **Trace** — Toggle trace mode (locks position, enables click-through).
-   - **Drag area** — Drag the bar to reposition the overlay.
-   - **Minimize / Exit** — Window controls.
+1. **Launch** TraceIt (installer shortcut, portable exe, or `npm start`).
+2. **Upload** — Click **Upload Image** to load a reference image (PNG, JPG, BMP, GIF, WebP).
+3. **Position** — Drag the top bar to move the overlay; it opens centered on screen.
+4. **Adjust** — Use the top bar: **Opacity** and **Scale** sliders, and **Trace** to lock and enable click-through.
+5. **Minimize / Exit** — Use the top bar buttons or the system tray icon.
+
+The overlay and top bar stay on top of other windows. When **Trace** is on, clicks pass through the image so you can trace in your painting app or game.
+
+---
 
 ## Building from source
-
-To build a portable exe yourself:
 
 ```bash
 npm install
 npm run build
 ```
 
-The built files appear in `dist/`:
+Build output in `dist/`:
 
-- **dist/TraceIt.exe** — Single portable exe (~66 MB). Use this for sharing; double-click to run. A splash screen shows while it starts.
-- **dist/win-unpacked/** — Unpacked app folder. Run `TraceIt.exe` inside it for faster launch (no extraction step).
+| File / folder | Description |
+|---------------|-------------|
+| **TraceIt-Setup.exe** | Installer. Run once to install; launch from Start menu for instant start + splash. |
+| **TraceIt-Portable.exe** | Single portable exe; no install. First run unpacks, then app starts. |
+| **win-unpacked/** | Unpacked app. Run `TraceIt.exe` inside for instant launch (e.g. development). |
+
+---
 
 ## Requirements
 
 - **Windows 10 or 11**
-- **Node.js** (only if running or building from source; not needed for the release exe)
+- **Node.js** — Only if running or building from source; not needed for the release exe or installer.
+
+---
 
 ## License
 

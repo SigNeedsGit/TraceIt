@@ -29,18 +29,17 @@ function createSplashWindow() {
     frame: false,
     center: true,
     resizable: false,
-    transparent: true,
+    transparent: false,
     alwaysOnTop: true,
     skipTaskbar: false,
     backgroundColor: '#0a0a0a',
-    show: false,
+    show: true,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
   splashWindow.loadFile(getRendererPath('splash'));
-  splashWindow.once('ready-to-show', () => splashWindow.show());
   return splashWindow;
 }
 
@@ -516,9 +515,23 @@ function updateTrayMenu() {
 // --- App lifecycle ---
 
 app.whenReady().then(() => {
-  // Show splash immediately for instant feedback
+  // Show splash first and wait for it to be visible before loading main UI
   createSplashWindow();
+  const splash = splashWindow;
+  if (!splash || splash.isDestroyed()) {
+    startMainUI();
+    return;
+  }
+  splash.webContents.once('did-finish-load', () => {
+    startMainUI();
+  });
+  // Fallback: if splash fails to load (e.g. missing file), still open main UI after short delay
+  setTimeout(() => {
+    if (splashWindow === splash && !controlWindow) startMainUI();
+  }, 3000);
+});
 
+function startMainUI() {
   loadConfig();
   if (config.lastImage && require('fs').existsSync(config.lastImage)) {
     currentImagePath = config.lastImage;
@@ -536,15 +549,24 @@ app.whenReady().then(() => {
     closeSplash();
   } else {
     createControlWindow();
-    controlWindow.once('ready-to-show', () => {
-      controlWindow.show();
-      closeSplash();
-    });
-    // Fallback if ready-to-show already fired
-    if (controlWindow.isVisible()) closeSplash();
+    const win = controlWindow;
+    if (win && !win.isDestroyed()) {
+      win.once('ready-to-show', () => {
+        if (win && !win.isDestroyed()) {
+          win.show();
+          closeSplash();
+        }
+      });
+      win.webContents.once('did-finish-load', () => {
+        if (win && !win.isDestroyed() && !win.isVisible()) {
+          win.show();
+          closeSplash();
+        }
+      });
+    }
   }
   createTray();
-});
+}
 
 app.on('window-all-closed', (e) => {
   // Don't quit or destroy tray -- the app lives in the tray

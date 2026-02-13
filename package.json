@@ -16,25 +16,20 @@
   "build": {
     "appId": "com.sig.traceit",
     "productName": "TraceIt",
-    "directories": {
-      "output": "dist"
-    },
-    "files": [
-      "main.js",
-      "preload.js",
-      "renderer/**/*",
-      "assets/**/*"
-    ],
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "renderer/**/*", "assets/**/*"],
     "win": {
       "target": [
-        {
-          "target": "portable",
-          "arch": ["x64"]
-        }
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
       ]
     },
-    "portable": {
-      "artifactName": "TraceIt.exe"
+    "portable": { "artifactName": "TraceIt-Portable.exe" },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "artifactName": "TraceIt-Setup.exe",
+      "shortcutName": "TraceIt"
     }
   }
 }
