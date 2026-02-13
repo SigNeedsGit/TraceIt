@@ -1,0 +1,114 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #0e0e0e;
+  color: #d0d0d0;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  height: 100%;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #eee;
+  margin-bottom: 20px;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+.upload-btn {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  background: #1a1a1a;
+  color: #ccc;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  transition: background .2s, border-color .2s, color .2s;
+  letter-spacing: 0.3px;
+}
+.upload-btn:hover { background: #222; border-color: #444; color: #fff; }
+
+.preview {
+  flex: 1;
+  min-height: 140px;
+  margin: 20px 0;
+  background: #141414;
+  border: 1px solid #222;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  font-size: 12px;
+  text-align: center;
+  padding: 16px;
+  overflow: hidden;
+}
+.preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.scale-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.scale-row label {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.scale-row input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  background: #2a2a2a;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.scale-row input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #666;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .15s;
+}
+.scale-row input[type="range"]::-webkit-slider-thumb:hover { background: #888; }
+.scale-row span {
+  flex: 0 0 40px;
+  font-size: 12px;
+  color: #888;
+  text-align: right;
+}
+
+.hint {
+  font-size: 11px;
+  color: #3a3a3a;
+  line-height: 1.5;
+  margin-top: auto;
+}
