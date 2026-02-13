@@ -24,6 +24,23 @@ npm start
 You need [Node.js](https://nodejs.org/) installed for this.
 
 ---
+Images:
+
+First Boot Menu - Upload Image
+
+<img width="363" height="406" alt="Screenshot 2026-02-12 232028" src="https://github.com/user-attachments/assets/4989f758-6026-45fa-8e04-127582e49454" />
+
+When Image is uploaded
+
+<img width="1200" height="1245" alt="Screenshot 2026-02-12 223433" src="https://github.com/user-attachments/assets/01825506-8c12-41ec-bfd0-08fbe505dace" />
+
+Opacity and Trace mode toggled on
+
+<img width="1153" height="1188" alt="Screenshot 2026-02-12 223518" src="https://github.com/user-attachments/assets/8555aa05-6592-45e5-abd8-e3648f6f7b67" />
+
+Result
+
+<img width="1449" height="1199" alt="Screenshot 2026-02-12 223608" src="https://github.com/user-attachments/assets/36d4c0db-6ede-41b1-a35d-287e09542ea8" />
 
 ## Features
 
@@ -36,13 +53,6 @@ You need [Node.js](https://nodejs.org/) installed for this.
 - **Loading screen** — Splash screen on launch so you know the app is starting.
 - **Dark UI** — Sleek dark theme that stays out of your way.
 - **System tray** — Runs quietly in the background.
-
-## Screenshots
-
-<img width="363" height="406" alt="TraceIt upload window" src="https://github.com/user-attachments/assets/4c14e09f-fb77-4557-88aa-7047a3959d80" />
-<img width="1200" height="1245" alt="TraceIt overlay" src="https://github.com/user-attachments/assets/eaac8d64-3d2e-4eb7-bf8b-5c0cde08ae78" />
-<img width="1153" height="1188" alt="TraceIt top bar" src="https://github.com/user-attachments/assets/b2e82d1f-98c7-40c7-a7d9-0949ded21d53" />
-<img width="1449" height="1199" alt="TraceIt tracing" src="https://github.com/user-attachments/assets/4f6dfe68-d728-4d96-b4bd-d86ebfcb5607" />
 
 ## Usage
 
