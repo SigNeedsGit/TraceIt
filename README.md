@@ -17,7 +17,7 @@ The app starts immediately when you run it—no unpack delay. Best experience.
 
 ### Option 2: Portable (no install)
 
-1. Download **TraceIt-Portable.exe** from [Releases (Setup)](https://github.com/SigNeedsGit/TraceIt/releases/tag/setup).
+1. Download **TraceIt-Portable.exe** from [Releases (Setup)](https://github.com/SigNeedsGit/TraceIt/releases/tag/trace).
 2. Double-click to run. The first launch may take several seconds while the exe unpacks; then the splash and main window appear.
 3. Click **Upload Image** to load a reference and start.
 
