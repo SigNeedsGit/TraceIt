@@ -71,7 +71,7 @@ if (window.electronAPI) {
   window.electronAPI.getInitialConfig().then((cfg) => {
     if (cfg && typeof cfg.overlayScale === 'number') {
       const pct = Math.round(cfg.overlayScale * 100);
-      scaleSlider.value = Math.max(25, Math.min(200, pct));
+      scaleSlider.value = Math.max(49, Math.min(200, pct));
       scaleLabel.textContent = scaleSlider.value + '%';
     }
     if (cfg && typeof cfg.opacity === 'number') {

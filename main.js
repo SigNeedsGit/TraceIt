@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Tray, Menu, screen } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Tray, Menu, screen, nativeImage } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const { pathToFileURL } = require('url');
@@ -129,7 +129,12 @@ function createTopBarWindow(width) {
   });
   topBarWindow.loadFile(getRendererPath('topbar'));
   topBarWindow.setAlwaysOnTop(true, 'screen-saver');
-  topBarWindow.on('closed', () => { topBarWindow = null; });
+  topBarWindow.on('closed', () => {
+    topBarWindow = null;
+    if (overlayWindow && !overlayWindow.isDestroyed()) {
+      overlayWindow.close();
+    }
+  });
   topBarWindow.on('move', () => {
     if (overlayWindow && !overlayWindow.isDestroyed() && topBarWindow && !topBarWindow.isDestroyed()) {
       const [x, y] = topBarWindow.getPosition();
@@ -150,22 +155,27 @@ function getMaxOverlaySize() {
 }
 
 function computeOverlaySize(imagePath) {
-  try {
-    const sizeOf = require('electron').nativeImage.createFromPath(imagePath).getSize();
-    if (!sizeOf || sizeOf.width <= 0 || sizeOf.height <= 0) return { width: 320, height: 200 };
-    const max = getMaxOverlaySize();
-    let w = sizeOf.width, h = sizeOf.height;
-    if (w > max.width || h > max.height) {
-      const r = Math.min(max.width / w, max.height / h);
-      w = Math.floor(w * r);
-      h = Math.floor(h * r);
+  const max = getMaxOverlaySize();
+  let w = 320;
+  let h = 200;
+  if (imagePath) {
+    const img = nativeImage.createFromPath(imagePath);
+    const size = img.getSize();
+    if (size.width > 0 && size.height > 0) {
+      w = size.width;
+      h = size.height;
     }
-    w = Math.max(80, Math.floor(w * overlayScale));
-    h = Math.max(60, Math.floor(h * overlayScale));
-    return { width: w, height: h };
-  } catch (_) {
-    return { width: 320, height: 200 };
   }
+  w = Math.round(w * overlayScale);
+  h = Math.round(h * overlayScale);
+  if (w > max.width || h > max.height) {
+    const r = Math.min(max.width / w, max.height / h);
+    w = Math.floor(w * r);
+    h = Math.floor(h * r);
+  }
+  w = Math.max(80, w);
+  h = Math.max(60, h);
+  return { width: w, height: h };
 }
 
 function resizeOverlay(w, h) {
@@ -178,7 +188,7 @@ function resizeOverlay(w, h) {
 
 function createOverlayWindow() {
   if (overlayWindow && !overlayWindow.isDestroyed()) return overlayWindow;
-  const size = currentImagePath ? computeOverlaySize(currentImagePath) : { width: 320, height: 200 };
+  const size = computeOverlaySize(currentImagePath);
   overlayWindow = new BrowserWindow({
     width: size.width,
     height: size.height,
@@ -216,7 +226,7 @@ function getCenteredPosition(frameWidth, frameHeight) {
 function switchToTopBar() {
   if (controlWindow && !controlWindow.isDestroyed()) controlWindow.hide();
   createOverlayWindow();
-  const size = currentImagePath ? computeOverlaySize(currentImagePath) : { width: 320, height: 200 };
+  const size = computeOverlaySize(currentImagePath);
   const barWidth = Math.max(size.width, 460);
   const totalHeight = TOP_BAR_HEIGHT + size.height;
   const pos = getCenteredPosition(barWidth, totalHeight);
@@ -288,14 +298,14 @@ ipcMain.on('exit-clicked', () => {
 });
 
 ipcMain.on('topbar-move', (_, dx, dy) => {
-  if (topBarWindow && !topBarWindow.isDestroyed()) {
-    const [x, y] = topBarWindow.getPosition();
-    const nx = x + dx;
-    const ny = y + dy;
-    topBarWindow.setPosition(nx, ny);
-    if (overlayWindow && !overlayWindow.isDestroyed()) {
-      overlayWindow.setPosition(nx, ny + TOP_BAR_HEIGHT);
-    }
+  if (!topBarWindow || topBarWindow.isDestroyed()) return;
+  const [x, y] = topBarWindow.getPosition();
+  const nx = Math.round(Number(x) + Number(dx));
+  const ny = Math.round(Number(y) + Number(dy));
+  if (!Number.isFinite(nx) || !Number.isFinite(ny)) return;
+  topBarWindow.setPosition(nx, ny);
+  if (overlayWindow && !overlayWindow.isDestroyed()) {
+    overlayWindow.setPosition(nx, ny + TOP_BAR_HEIGHT);
   }
 });
 
@@ -312,8 +322,9 @@ ipcMain.on('topbar-drag-start', (_, screenX, screenY) => {
       return;
     }
     const pos = screen.getCursorScreenPoint();
-    const nx = pos.x - offsetX;
-    const ny = pos.y - offsetY;
+    const nx = Math.round(Number(pos.x) - offsetX);
+    const ny = Math.round(Number(pos.y) - offsetY);
+    if (!Number.isFinite(nx) || !Number.isFinite(ny)) return;
     topBarWindow.setPosition(nx, ny);
     if (overlayWindow && !overlayWindow.isDestroyed()) {
       overlayWindow.setPosition(nx, ny + TOP_BAR_HEIGHT);
@@ -329,7 +340,7 @@ ipcMain.on('topbar-drag-end', () => {
 });
 
 ipcMain.on('set-scale', (_, scale) => {
-  overlayScale = Math.max(0.25, Math.min(3, scale));
+  overlayScale = Math.max(0.49, Math.min(3, scale));
   if (overlayWindow && !overlayWindow.isDestroyed() && currentImagePath) {
     const size = computeOverlaySize(currentImagePath);
     const barWidth = Math.max(size.width, 460);
@@ -349,14 +360,14 @@ ipcMain.on('set-scale', (_, scale) => {
 });
 
 ipcMain.on('overlay-move', (_, dx, dy) => {
-  if (overlayWindow && !overlayWindow.isDestroyed()) {
-    const [x, y] = overlayWindow.getPosition();
-    const nx = x + dx;
-    const ny = y + dy;
-    overlayWindow.setPosition(nx, ny);
-    if (topBarWindow && !topBarWindow.isDestroyed()) {
-      topBarWindow.setPosition(nx, ny - TOP_BAR_HEIGHT);
-    }
+  if (!overlayWindow || overlayWindow.isDestroyed()) return;
+  const [x, y] = overlayWindow.getPosition();
+  const nx = Math.round(Number(x) + Number(dx));
+  const ny = Math.round(Number(y) + Number(dy));
+  if (!Number.isFinite(nx) || !Number.isFinite(ny)) return;
+  overlayWindow.setPosition(nx, ny);
+  if (topBarWindow && !topBarWindow.isDestroyed()) {
+    topBarWindow.setPosition(nx, ny - TOP_BAR_HEIGHT);
   }
 });
 
